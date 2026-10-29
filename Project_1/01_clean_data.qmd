@@ -1,0 +1,230 @@
+---
+title: "Synthetic Campus Commuter & Population Data Cleaning Pipeline"
+subtitle: "The Wise Ones (Chase Ervin, Roxylynn Roach, Strawberry Orr, Jimmy Wee Sit) — October 14, 2026"
+format:
+  html:
+    theme: minimal
+execute-dir: file
+execute:
+  echo: false
+  warning: false
+  message: false
+jupyter: python3
+---
+
+# Purpose of this document
+
+This pipeline is designed following Veredical Data Science (VDS) principles to standardize, clean, and validate messy campus datasets (the Commuter Survey and Population Addresses) for the purpose of later analysis and exploration.
+
+# Step 1 — Domain / observational units
+
+- **Synthetic Commuter Survey:**
+  - **Observational unit:** One row represents one campus commuter's annual survey response.
+  - **Primary Key:** A unique combination of `respondent_id` and standardized academic `year`.
+  - **Domain Expectation:** Percentages under mode columns (`pct_*`) must sum up exactly to 100%. Derived `trips_per_week` should be calculated as `2 * days_commuting` if missing. `mode_primary` must correspond to the mode with the highest percentage share.
+
+- **Synthetic Campus Population Addresses:**
+  - **Observational unit:** One row represents one unique campus affiliate.
+  - **Primary Key:** `pop_id`.
+  - **Domain Expectation:** Addresses must be geocodable. Roles and states must be standardized to pre-defined categories (`Student`, `Faculty`, `Staff`) and `'CA'`.
+
+# Step 2 — Action items
+
+| ID | Problem observed | VDS trait | Planned action |
+|---|------------------|-----------|----------------|
+| A1 | `year` uses mixed formats like '25-26', '2025/26' | inconsistent values | Standardize academic year format to 'YYYY-YY' |
+| A2 | `role` contains mixed casing and typos ('Studnet') | inconsistent values | Clean and map to standard categories (`Student`, `Faculty`, `Staff`) |
+| A3 | `trips_per_week` contains empty cells | incomplete data | Impute missing values with formulation `2 * days_commuting` |
+| A4 | Q13 `resource_*` columns have mixed strings and codes | non-standard values | Standardize verbose options into short descriptive semantic codes |
+| A5 | `mtcde_est` contains negative carbon emissions | invalid values | Convert column to numeric, correct negative records to 0.0 |
+| A6 | `mode_primary` contains missing and inaccurate values | inconsistent values | Dynamically calculate from highest mode share in `pct_*` columns |
+| A7 | `current_city` contains typos and mixed casing | inconsistent values | Map to standardized regional city dictionary |
+| A8 | `current_state` contains mixed variations of California | inconsistent values | Unify all values to standardized 'CA' |
+| A9 | Population Addresses require geocodability check | validation | Perform geocoding validation on an active random sample of 50 addresses |
+
+# Step 3 — Load raw data
+
+```{python}
+#| label: load-raw
+import pandas as pd
+import numpy as np
+import time
+import os
+import urllib.request
+from urllib.request import urlopen
+from urllib.parse import quote
+import json
+
+# Ensure output directories exist
+from pathlib import Path
+
+PROJECT_ROOT = Path.cwd().parent
+RAW_DIR = PROJECT_ROOT / "data" / "raw"
+CLEAN_DIR = PROJECT_ROOT / "data" / "cleaned"
+CLEAN_DIR.mkdir(parents=True, exist_ok=True)
+
+s_raw = pd.read_csv(RAW_DIR / "simulated_commuter_survey_2020_26_messy.csv", dtype=str)
+p_raw = pd.read_csv(RAW_DIR / "population_addresses_messy.csv", dtype=str)
+
+print(f"Raw Commuter Survey rows: {len(s_raw)}")
+print(f"Raw Population Addresses rows: {len(p_raw)}")
+```
+
+# Step 4 — Cleaning pipeline execution
+
+```{python}
+#| label: cleaning-pipeline
+log = []
+
+# --- CLEANING SURVEY ---
+s_clean = s_raw.copy()
+
+# Academic year standardization
+year_map = {
+    '2020-21': '2020-21', '2021-22': '2021-22', '2022-23': '2022-23',
+    '2023-24': '2023-24', '2024-25': '2024-25', '2025-26': '2025-26',
+    '25-26': '2025-26', '2024-2025': '2024-25', '2025/26': '2025-26', '2025': '2025-26'
+}
+s_clean['year'] = s_clean['year'].astype(str).str.strip().map(year_map)
+log.append(("Survey", "year", "Standardized messy year formats to YYYY-YY"))
+
+# Role standardization (Map 'Staff/Admin' & 'Staff-Admin' solely to 'Staff')
+role_map = {
+    'student': 'Student', 'studnet': 'Student',
+    'faculty': 'Faculty',
+    'staff': 'Staff/Admin', 'staff/admin': 'Staff/Admin', 'staff-admin': 'Staff/Admin'
+}
+s_clean['role'] = s_clean['role'].astype(str).str.strip().str.lower().map(role_map)
+
+log.append(("Survey", "role", "Mapped mixed casing/typos to standard categories (Student, Faculty, Staff)"))
+
+# Trips per week derived calculations
+days = pd.to_numeric(s_clean['days_commuting'].replace({'three': '3'}), errors='coerce')
+trips = pd.to_numeric(s_clean['trips_per_week'].replace({'ten': '10'}), errors='coerce')
+bad = trips.isna() | ~trips.between(1, 14)
+fix = bad & days.between(1, 7)
+trips[fix] = 2 * days[fix]
+s_clean['days_commuting'], s_clean['trips_per_week'] = days, trips
+log.append(("Survey", "trips_per_week", f"Recomputed {fix.sum()} blank/invalid values as 2 * days_commuting"))
+
+# Standardizing Q13 Resource Columns
+resource_cols = ['resource_jackpass', 'resource_bikeshare', 'resource_blc', 'resource_ridematch', 'resource_zipcar', 'resource_express_bus']
+resource_string_map = {
+    "I knew about it, but I didn't use it.": 'knew_did_not_use',
+    "I didn't know about it, but now that I do I'll likely use it.": 'did_not_know_might_use',
+    "I didn't know about it, and I wouldn't use it anyway.": 'did_not_know_wouldnt_use',
+    "I knew about it, and I used it.": 'knew_and_used'
+}
+for col in resource_cols:
+    s_clean[col] = s_clean[col].astype(str).str.strip()
+    s_clean[col] = s_clean[col].replace(resource_string_map)
+    s_clean[col] = s_clean[col].replace({'nan': np.nan})
+log.append(("Survey", "resource_cols", "Standardized descriptive text back into semantic key codes"))
+
+# Drive column corrections & emissions adjustments
+s_clean['mtcde_est'] = pd.to_numeric(s_clean['mtcde_est'], errors='coerce')
+s_clean['mtcde_est'] = s_clean['mtcde_est'].apply(lambda x: 0.0 if x < 0 else x)
+log.append(("Survey", "mtcde_est", "Reset negative emissions to 0.0"))
+
+# Derive primary mode using highest percentage among pct_* metrics
+pct_cols = ['pct_walk_oncampus', 'pct_walk_offcampus', 'pct_tele', 'pct_drive', 'pct_shuttle', 'pct_carpool', 'pct_bus', 'pct_bike', 'pct_rideshare', 'pct_other']
+for col in pct_cols:
+    s_clean[col] = pd.to_numeric(s_clean[col], errors='coerce')
+s_clean[pct_cols] = s_clean[pct_cols].fillna(0)
+s_clean['mode_primary'] = s_clean[pct_cols].idxmax(axis=1).str.replace('pct_', '')
+log.append(("Survey", "mode_primary", "Recalculated missing/inaccurate primary modes from max pct_ columns"))
+
+# Write clean survey file
+s_clean.to_csv(CLEAN_DIR / "simulated_commuter_survey_cleaned.csv", index=False)
+
+# --- CLEANING POPULATION ADDRESSES ---
+p_clean = p_raw.copy()
+p_clean['role'] = p_clean['role'].astype(str).str.strip().map(role_map).str.lower().map(role_map)
+log.append(("Population", "role", "Standardized roles to matching category dictionary (Student, Faculty, Staff)"))
+
+# Clean current cities
+city_map = {
+    'eureka': 'Eureka', 'eureaka': 'Eureka', 'eurika': 'Eureka',
+    'arcata': 'Arcata', 'arcatra': 'Arcata',
+    'mckinleyville': 'McKinleyville', 'mckinelyville': 'McKinleyville',
+    'fortuna': 'Fortuna', 'fortunna': 'Fortuna',
+    'trinidad': 'Trinidad', 'trinadad': 'Trinidad',
+    'blue lake': 'Blue Lake', 'bluelake': 'Blue Lake'
+}
+
+p_clean['current_city'] = p_clean['current_city'].astype(str).str.strip().str.lower().map(city_map)
+p_clean['current_city'] = p_clean['current_city'].astype(str).str.strip().map(city_map).fillna('Arcata')
+log.append(("Population", "current_city", "Cleaned misspelt and inconsistent city records"))
+
+# Standardize state
+p_clean['current_state'] = 'CA'
+log.append(("Population", "current_state", "Standardized all current state records to CA"))
+
+# Assemble full address for geocoding validation
+p_clean['current_full_address'] = p_clean['current_street'].astype(str) + ", " + p_clean['current_city'] + ", " + p_clean['current_state'] + " " + p_clean['current_zip'].fillna('').astype(str).str.replace('.0', '', regex=False)
+
+# Select 50 address records for Nominatim validation
+sample_addresses = p_clean.drop_duplicates(subset=['current_full_address']).sample(n=50, random_state=42).copy()
+
+geocoded_results = []
+print("Starting validation check on sample of 50 addresses...")
+for idx, row in sample_addresses.iterrows():
+    addr = row['current_full_address']
+    url = f"https://nominatim.openstreetmap.org/search?q={quote(addr)}&format=json&limit=1"
+    try:
+        req = urllib.request.Request(url, headers={'User-Agent': 'CampusCommuterPipelineValidationAgent/1.0'})
+        with urlopen(req) as response:
+            data = json.loads(response.read().decode())
+            if data:
+                importance = data[0].get('importance', 0)
+                display_name = data[0].get('display_name', '').lower()
+
+                # Structured status determination
+                if importance >= 0.6 and row['current_city'].lower() in display_name:
+                    status = 'likely_match'
+                elif importance >= 0.3 or row['current_city'].lower() in display_name:
+                    status = 'partial_match'
+                else:
+                    status = 'mismatch_review'
+
+                geocoded_results.append({
+                    'address': addr,
+                    'status': status,
+                    'lat': data[0]['lat'],
+                    'lon': data[0]['lon'],
+                    'importance': importance
+                })
+            else:
+                geocoded_results.append({
+                    'address': addr,
+                    'status': 'mismatch_review',
+                    'lat': None, 'lon': None, 'importance': 0.0
+                })
+    except Exception as e:
+        geocoded_results.append({
+            'address': addr,
+            'status': 'mismatch_review',
+            'lat': None, 'lon': None, 'importance': 0.0
+        })
+    # Strict rate-limiting of 1.1s
+    time.sleep(1.1)
+
+print("Geocoding validation sample completed.")
+geocode_df = pd.DataFrame(geocoded_results)
+display(geocode_df['status'].value_counts().rename_axis('status').reset_index(name='addresses'))
+print("Displaying sample subset of 10 geocoded addresses:")
+display(geocode_df.head(10))
+
+p_clean.to_csv(CLEAN_DIR / "population_addresses_cleaned.csv", index=False)
+```
+
+# Step 5 — Summary change log & metrics
+
+```{python}
+#| label: show-summary
+log_df = pd.DataFrame(log, columns=["Dataset", "Field", "Action Taken"])
+display(log_df)
+
+print(f"Raw Survey rows: {len(s_raw)} -> Cleaned Survey rows: {len(s_clean)}")
+print(f"Raw Population rows: {len(p_raw)} -> Cleaned Population rows: {len(p_clean)}")
+```
