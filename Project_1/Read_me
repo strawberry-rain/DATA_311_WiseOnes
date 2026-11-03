@@ -1,2 +1,31 @@
 The Wise Ones
-Members: Jimmy Wee Sit, Strawberry Orr, Chase Erwin, Roxy Roach
+Members: Jimmy Wee Sit, Strawberry Orr, Chase Ervin, Roxylynn Roach
+
+- Environmental impacts:
+    - Diversion Rate based on landfill percentages:
+        - (1 - (total weight of true landfill / total weight of audit)) * 100 = percentage of waste improperly disposed
+        - represents percentage of recycling and compost present in the landfill audit. Lower percentage is better
+
+    - https://www.epa.gov/waste-reduction-model/versions-waste-reduction-model
+        - the US Environmental Protection Agency developed a calculator to estimate emissions based of waste
+        - unsure if requirement or optional: has material capability for more accurate predictions
+        - compatable with excel
+
+- Economic impact:
+    - Until we have accurate costs from the current contract, we'll estimate from the HWMA rates which CPH previously had a contract with in 2023.
+        - this report from 2023: https://hwma.specialdistrict.org/files/6d91235e2/11092023%2BHWMA%2BAgenda%2Band%2BPacket.pdf
+        claims HWMA accepted CPH as a client under the "franchise haul rate" for solid waste.
+            - we can use HWMA's current market rate as a rough estimate for waste costs on the assumption that the 
+            HWMA rates will be roughly competative with the current contract.
+            - Under the current rates:
+                -   solid waste: $194.08 per ton
+                    - https://hwma.specialdistrict.org/solid-waste#docaccess-e762c25a7affdc5de4ac53feea53292e (table 3)
+                - mixed recycling : $153.79 per ton
+                    - https://www.hwma.net/files/d2277ee74/HWMA%2BAgenda%2Band%2BPacket%2B07102025.pdf (table 9)
+                - Worm guy compost rate: unknown
+                    - best estimate I have is a mention of a $14000 contract with the Worm Guy + $80 to Recology per hual. 
+                    - https://thelumberjack.org/category/sections/news/page/43/?page=15& (ctrl + f "worm")
+            - Assumptions: CPH is currently contracted with HWMA. The mixed recycling rate is from last year (2025-26), not the current year, so it isnt wholly accurate.
+    - in total, economic impact is measured as:
+        - 194.08(solid waste in tons) + 153.79(mixed recylcing in tons) + unknown (compost in tons)
+        - we can at least claim that disposing of recycling in the landfill is more costly
