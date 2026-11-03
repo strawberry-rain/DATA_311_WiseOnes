@@ -1,0 +1,199 @@
+﻿THE WISE ONES
+
+
+Client problem + additional focus: Where does the trash come from (trends)
+
+
+Tentative waste-audit location: Facilities Management
+
+
+Tentative type of waste audit: Landfill
+
+
+Deliverables:
+Relational Database Prototype
+Spreadsheet Prototype
+Storage System Evaluation
+Financial Impact Metric
+Environmental Impact Metric
+Data-Collection Recommendation
+* what variables should be collected
+   * how to define and record
+* how much data to collect
+* where/when data should be collected
+Additional client problem
+
+
+Final Report
+
+
+Estimated Sample Size: 64 samples in both groups (assuming 2 sample t-test)
+Team Roles:
+Project Manager: Jimmy Wee Sit
+Job Duties: 
+* Assist with duties as needed
+* Communication
+* Schedule meetings
+* Outline of project
+* Second line of Quality assurance
+Deliverables assigned to this person:
+* Make sure project is understood and comprehensible 
+* Turn in assignments
+* Due dates
+
+
+Technical Lead: Strawberry
+Job Duties: 
+* Lead design of relational database schema and spreadsheet
+* Coordinate construction of relational schema and spreadsheet
+Deliverables assigned to this person:
+Database Prototypes
+
+
+Quality Assurance: Roxy
+Job Duties: Verifying datasets, making sure models are accurate, ensuring there are no errors, data validation, model training and validation
+Deliverables assigned to this person: data collection recommendation, additional client problem
+
+
+
+
+Domain Expert: Chase
+Job Duties: Background research into client problem and university standing/ goals on waste. Identify information needed to develop database, spreadsheet, impact metrics. Basically research/gather any information the team needs to successfully solve the clients problem and create a consolidated research record. Schedule and meet with necessary parties, record notes.
+Deliverables assigned to this person: Financial and Environmental metrics
+
+
+Shared Work:
+
+
+What client problem or need will your team investigate in addition to the required deliverables?
+Special waste categorization. 
+
+
+Why does this problem matter to the client or to the goal of reducing campus waste?
+If the client knows what specific waste is there, they can identify the source of it. 
+
+
+What waste-audit data, campus information, or prototype feature could help your team investigate this problem?
+We can make a column for most common waste found in the audit. 
+
+
+What does your team expect to address during the next three weeks?
+Week 1: design database and Storage
+Week 2: Actual Data collection
+Week 3: refinements and reports
+
+
+What related issues are outside the scope of this project?
+Social impacts
+
+
+Audit Location:
+Why this location? Art supplies are specialized items that could be identified easier.
+What is included within the physical boundary of this location
+Who controls or manages the location? Morgan King
+What access or permission will the team need? Access to the dumpsters 
+
+
+Audit Type: 
+What waste stream, source, or activity will your team examine? Dumpsters and trashcans
+What will the team observe, sort, count, weigh, or otherwise measure? Trash
+
+
+What will be the unit of observation? Examples include a bag, bin, collection, station, building day, event, or individual item. 
+Bag or bin
+What waste categories will need to be recorded?
+Landfill, compost, recyclable, hazardous waste 
+What timing, frequency, or number of audit occasions are you currently considering? 2-3x same location
+
+
+
+
+Relational Database Prototype:
+Work required:
+Primary owner: Strawberry
+Supporting team members: Chase, Roxy
+
+
+Spreadsheet Prototype:
+Work required: wait till Database designed
+Primary owner: Jimmy
+Supporting team members: Roxy, Strawberry
+
+
+Storage-System Evaluation:
+Work required:
+Primary owner: Roxy
+Supporting team members: Chase, Strawberry, Jimmy
+
+
+Financial Impact metric: How much does it cost to move waste 
+Work required:
+Primary owner: Chase
+Supporting team members: Jimmy
+
+
+Environmental Impact metric:
+Work required:
+Primary owner: Chase
+Supporting team members: Jimmy
+
+
+Data Collection Recommendation (methodology):
+Work required:
+Primary owner: Roxylynn
+Supporting team members: Chase
+
+
+Additional Client Problem:
+Work required:
+Primary owner: Roxylynn
+Supporting team members: Strawberry
+
+
+
+
+Final report:
+Work required:
+Primary owner: Jimmy
+Supporting team members: Chase, Roxy, Strawberry
+
+
+
+
+Three Week Timeline:
+
+
+Week 1: Scope and Design
+* confirm audit location and type
+* identify special focus
+* identify the variables required
+* draft relational database schema/spreadsheet
+* select preliminary financial and environmental impact metrics
+* identify missing data, permissions, costs, or conversion factors
+* Background research on client problem
+
+
+Week 2: Builds, Tests, Collect data
+* Build database/spreadsheet prototypes
+* enter/generate enough data to test systems
+* develop impact calculations
+* gather evidence related to the special focus
+* begin documenting design decisions and limitations
+
+
+Week 3: Evaluate and Report
+* Evaluate the 2 storage systems
+* Select and justify evaluation criteria
+* complete impact examples
+* finalize the data-collection methodology
+* complete the analysis related to the special focus
+* integrate work into report
+* check integrations
+* review everything
+
+
+Dependencies:
+What tasks cannot begin until another task, decision, permission, or data source is complete?
+
+
+Background Research → Variables/Metrics → Database Design → Data Collection → Reports → Final Report
