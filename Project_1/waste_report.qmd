@@ -2,7 +2,11 @@
 title: "Campus Waste Audit Data System: Design and Recommendations"
 subtitle: "A proposal for collecting, storing, and using audit data"
 author:
-  - "Team name and members"
+  - "The Wise Ones:
+      - Jimmy Wee Sit, Project Manager
+      - Strawberry Orr, Technical Lead
+      - Roxylynn Roach, Quality Assurance
+      - Chase Ervin, Domain Expert"
 date: today
 format:
   html:
