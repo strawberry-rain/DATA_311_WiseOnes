@@ -1,0 +1,6 @@
+The Wise Ones: Chase Ervin, Roxylynn Roach, Jimmy Wee Sit, Strawberry Orr
+
+Project 2: Transportation Dashboard
+Create a streamlit dashboard intended to aid new and prospective students determine if they need/want to bring their car onto campus.
+
+Step 1:

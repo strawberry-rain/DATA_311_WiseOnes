@@ -1,0 +1,31 @@
+Instructions on Report
+Chase Ervin, Strawberry Orr, Jimmy Wee Sit, and Roxylynn Roach
+
+Needed:
+    Executuve Summary and Introduction:
+        executive summary defined as a high-level overview of purpose, findings, and recommendation, typically written last
+            introduction/context
+            purpose/client problem
+            goal of report
+    Methods:
+        accessable explaination of a relational database
+        system design: sql and spreadsheet
+        metrics
+        tests
+        sampling and testing methods
+    Results:
+        clear real/synthetic audit summaries
+        metric calculations
+        simulation findings
+        worked before/after intervention test with contextual interpretation
+        show a test applied to two real audits
+    Storage Comparison:
+        sql vs spreadsheet
+            appropriate client-focused criteria
+            evidence-based tradeoffs and justified recommendation
+    Conclusion and Practical Implementation Plan:
+        references
+        presentation
+        named acknowledgements describing peer feedback and responses
+
+can use quarto if desired, template in canvas

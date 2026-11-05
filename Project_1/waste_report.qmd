@@ -1,0 +1,204 @@
+---
+title: "Campus Waste Audit Data System: Design and Recommendations"
+subtitle: "A proposal for collecting, storing, and using audit data"
+author:
+  - "The Wise Ones:
+      - Jimmy Wee Sit, Project Manager
+      - Strawberry Orr, Technical Lead
+      - Roxylynn Roach, Quality Assurance
+      - Chase Ervin, Domain Expert"
+date: today
+format:
+  html:
+    toc: true
+    number-sections: true
+    code-fold: true
+    code-tools: false
+    embed-resources: true
+  docx:
+    toc: true
+    number-sections: true
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+<!--
+ROLE ACCOUNTABILITY MAP (not rendered)
+Technical Lead: Methods "Spreadsheet and Relational Database Prototypes"; setup/README.
+Quality Assurance: Methods "Validation and System Testing"; Results "Synthetic Data
+Testing Results"; test evidence and checks of numerical outputs.
+Domain Expert: metric rationale; special-focus relevance; domain interpretation.
+Project Manager: report cohesion, file organization, implementation steps and handoff.
+These are accountabilities, not separate reports; all students help with shared work.
+-->
+
+<!--
+STUDENT INSTRUCTIONS (not shown in the rendered client report)
+Replace italicized prompts with your own writing and remove the prompts before submission.
+Submit both this source .qmd and a rendered client-facing report (HTML or Word), plus
+(a) functioning spreadsheet prototype, (b) runnable SQL file(s) creating the relational schema
+    with sample-data import and example analysis queries,
+(c) synthetic test data and a README explaining how to reproduce the demonstrations,
+(d) statistical simulation code and results, and (e) special-focus deliverable.
+Make it possible for the client to open and use your artifacts without guessing.
+Demonstrate data entry, at least one useful summary, both metric calculations,
+and one hypothetical before/after intervention hypothesis test.
+Use units for every weight and volume. Never present synthetic observations as real audits.
+You may reorganize lower-level headings if doing so improves the client report, but
+cover every required element. The grading rubric awards 60 team points for technical
+deliverables, 25 team points for the report, 10 individual role points, and 5 individual
+role-matched peer review points. Only ONE team report is required. Each student
+receives the same 85-point team score plus up to 15 individual points. Team members collaborate on all work; roles are
+accountability for specific evidence, not exclusive authorship.
+The grading rubric is at the bottom of this source file in a non-rendering comment,
+and separately in the rubric handout.
+-->
+
+# Executive Summary {-}
+
+*In approximately one page or less, state the client's problem, what your team built, your recommended system, the most useful demonstration results, the audit-size recommendation, and practical next steps. This section should stand alone for campus leaders. Write it last.*
+
+# Introduction
+
+*Explain the purpose of the waste-audit data system and its role in tracking waste and evaluating future interventions. Identify the client and audiences, summarize relevant campus sustainability or zero-waste priorities with citations, and preview the questions this report addresses. Distinguish system development from a completed intervention evaluation.*
+
+# Methods
+
+*Explain how you designed, evaluated, and tested the systems and analyses. Use language accessible to a nontechnical client; point interested readers to supporting files for technical detail.*
+
+## Client Data Requirements and Actual Audits
+
+*Describe the client's required fields: building, week, compost weight and volume, landfill weight and volume, recycling weight and volume, and comments. Specify units, data definitions, and how missing data are recorded. Identify any additional fields your team introduced and why. Explain the two landfill audits and one building audit collected for this project and any preparation of those data; do not invent or infer values.*
+
+## Spreadsheet and Relational Database Prototypes
+
+*Introduce both storage approaches for a reader who has never used SQL: explain what a relational database is, how its linked tables differ from a spreadsheet, and why these differences might matter for campus audits. Describe the designs your team actually built, their required fields, and how audit records can be entered and summarized. Explain technical terms such as tables, keys, and relationships in plain language; include a diagram if useful. Link to the submitted spreadsheet and SQL files in the team GitHub repository.*
+
+## Validation and System Testing
+
+*Describe how you entered the two real landfill audits and one real building audit into both prototypes and tested them with substantial, clearly labeled synthetic audit records. Explain how the synthetic data were generated and what checks showed that each system stores records and produces accurate summaries. Choose additional checks that are useful for your design; you do not need to follow a prescribed test script.*
+
+## Criteria for Comparing Storage Systems
+
+*Explain the criteria your team chose to compare its two working prototypes. Suggested criteria include ease of data entry, data accuracy and integrity, producing summaries, growth to many audits, maintenance, costs, required staff expertise, and support for before/after intervention comparisons. Use criteria appropriate to the client's needs, and explain how you evaluated both options fairly. Not every criterion needs a numerical score.*
+
+## Economic and Sustainability Metric Definitions
+
+*Define one economic metric and one sustainability metric using an explicit formula, units, and interpretation. Explain why each is important to campus decision-makers or students; identify which inputs come from the audit system versus campus documents, literature, or other outside estimates. State assumptions and uncertainty. These metrics do not have to be the outcome for the intervention analysis.*
+
+## Simulation and Hypothesis Test for Intervention Evaluation
+
+*Define the outcome as compostable weight found in landfill divided by total audited landfill weight, before and after an intervention. Explain the meaningful change you want to detect, the upper bounds on Type I and Type II error rates, the sampling units, key assumptions, and how simulation determines the required audit effort. Describe the hypothesis test and decision rule you will use in a worked example with hypothetical before/after data. Weight is not a count of independent Bernoulli trials; explain why a standard two-proportion binomial test may not apply.*
+
+## Special Focus: [Insert Topic]
+
+*State your team's chosen question or opportunity, why the client might care, how you investigated it, and what independent deliverable you created. Point to the submitted artifact.*
+
+# Results
+
+*Present evidence, not only descriptions. Clearly label what comes from the three actual audits, from synthetic system-testing records, and from the separate statistical simulation. Use informative figures and tables and explain the implication of each.*
+
+## Data Entry and Summary Using Actual Audits
+
+*Demonstrate that you entered the two landfill audits and one building audit into both prototypes. Present at least one useful summary calculated from these records, with units and an explanation of what it means to the client. You may choose the summary and how best to present it. Explain what three audits cannot establish; do not claim they demonstrate an intervention effect.*
+
+## Synthetic Data Testing Results
+
+*Report the amount of synthetic data used, how each prototype performed when you entered the records and produced a summary, and what you learned about system reliability or limitations. Include enough evidence to substantiate the results without prescribing a particular demonstration. Label synthetic results clearly so they cannot be mistaken for real campus observations.*
+
+## Comparison and Storage Recommendation
+
+*Compare the spreadsheet and relational database prototypes side by side, ideally using a concise table with your chosen criteria. Suggested dimensions include ease of use, data integrity, summaries and retrieval, scalability, maintenance, cost, staff skills, and intervention-analysis support. Explain the most important tradeoffs in ordinary language. Recommend a spreadsheet, database, hybrid, or phased approach and justify that decision for the client's resources and goals.*
+
+## Economic and Sustainability Metrics: Examples
+
+*Demonstrate each metric with actual audit data when possible, or a clearly labeled hypothetical example otherwise. Present the calculated value, units, assumptions, source citations, and how campus staff or students might use it. Explain any data not currently available.*
+
+## Audit Effort and Simulation Findings
+
+*Present the amount of auditing required under your assumptions, the meaningful difference to detect, and the simulated Type I error and power (or Type II error). Translate the result into practical advice about how many independent units and/or how much waste to audit. Explain how at least one important assumption changes the recommendation.*
+
+## Worked Example: Evaluating an Intervention
+
+*Invent a realistic intervention and use clearly labeled hypothetical before/after audit measurements to carry out the hypothesis test described in Methods. Show the compostable and total landfill weights, the before/after compostable fractions, the estimated change, and the test result (with a p-value or equivalent decision measure and uncertainty interval when appropriate). State whether the evidence supports a change and interpret the size of the change for campus decision-makers. Explain why an observed change, even if statistically significant, does not by itself establish that the intervention caused it. Ensure the test matches the sampling assumptions used in your simulation.*
+
+## Special Focus Deliverable and Findings
+
+*Show the deliverable (or an appropriate preview and link) and summarize what was learned or produced. Explain how it could improve the system, its usefulness, or campus decision-making.*
+
+# Conclusion
+
+## Recommendations
+
+*Synthesize the evidence into a clear recommendation for the client's system, metrics, and future audit strategy. State what is ready to use and what requires further work.*
+
+## Proposed Implementation Steps
+
+*Propose a realistic sequence of steps, including who would enter data, maintain the system, check data quality, and review results. Identify important decisions the client or management must make before adopting the solution.*
+
+## Limitations and Future Work
+
+*Discuss limitations of three actual audits, synthetic testing, external metric estimates, and simulation assumptions. Identify practical next steps that could strengthen future intervention evaluation.*
+
+# References
+
+*Provide full, consistent citations for the campus sustainability and zero-waste plans, published values used in the metrics, technical resources, and all other cited materials. Include working links or identifiers where available. Delete this instruction before submission.*
+
+<!--
+GRADING RUBRIC AND ROLE OWNERSHIP (source-only; not shown to the client)
+
+ONE SUBMISSION PER TEAM IN THE TEAM GITHUB REPOSITORY:
+- Source .qmd and rendered client-facing report (HTML or Word)
+- Functional spreadsheet prototype (.xlsx or similar)
+- Runnable SQL schema and queries, with import/setup instructions
+- Three real audit records and substantial clearly marked synthetic testing data
+- Economic and sustainability metric calculations, formulas, and source assumptions
+- Reproducible statistical simulation code and outputs for audit effort / sample size
+- Chosen special-focus deliverable
+- Brief README with file map and how to reproduce or open the products
+- GitHub link prominently included in the client-facing report
+- Share report draft and GitHub deliverables for role-matched peer review BEFORE final submission
+
+SCORING: Each student = team technical score /60 + team report score /25
+          + individual role score /10 + individual peer review score /5 = /100.
+
+TEAM TECHNICAL DELIVERABLES — 60 POINTS:
+10 Spreadsheet prototype; 10 relational database and SQL files;
+ 5 testing with actual and synthetic data; 10 economic and sustainability metrics;
+10 sample-size simulation, calculations, and worked intervention test; 10 special-focus deliverable;
+ 5 GitHub repository quality, README, organization and version-control practices.
+Assess both presence/completeness and working quality/correctness of each artifact.
+
+TEAM CLIENT REPORT — 25 POINTS:
+ 4 Executive Summary and Introduction;
+ 6 Methods (clear, accurate, reproducible);
+ 7 Results (audit summary, metric examples, worked intervention test, interpretation);
+ 4 layperson-friendly explanation, evidence-based storage comparison and recommendation;
+ 4 Conclusion, implementation steps, references, professional presentation,
+   and named Acknowledgments explaining feedback and response.
+
+INDIVIDUAL ROLE — 10 POINTS EACH:
+Technical Lead: 5 technical architecture/design documentation;
+                5 reproducibility and setup/use instructions.
+Project Manager: 5 consistent, organized report and repository handoff;
+                 5 actionable implementation plan.
+Domain Expert: 5 metric relevance and credible sources;
+               5 campus-relevant interpretation and special-focus rationale.
+Quality Assurance: 5 documented test strategy and coverage;
+                   5 validation evidence, problems found and checks of results.
+
+INDIVIDUAL ROLE-MATCHED PEER REVIEW — 5 POINTS:
+ 2 substantive review of corresponding role work in another team's draft and GitHub;
+ 2 specific constructive feedback with strengths and recommendations;
+ 1 professional feedback with references to sections/files.
+Peer review MUST occur before final submission. Each team acknowledges reviewers
+by name and describes specific feedback and any resulting revisions (or reasons a
+suggestion was not adopted). Acknowledgments are part of the report, not an extra
+individual submission. Each student provides their own role-matched peer feedback.
+-->
+
+# Acknowledgments {-}
+
+*Thank the students on the other team who reviewed your draft report and GitHub deliverables before final submission. Identify each reviewer by name, specify the feedback they provided (including which section, prototype, calculation, or file they reviewed), and explain what you changed in response. You may also acknowledge constructive suggestions you did not adopt, with a brief reason. Keep this professional and concise; do not include grading information.*
