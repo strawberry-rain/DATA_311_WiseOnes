@@ -28,8 +28,7 @@ SECTIONS = [
     "Home",
     "Transportation Info",
     "Take the Survey",
-    "Explore Data",
-    "Useful Links",
+    "Explore Data"
 ]
 
 st.sidebar.title("Commute Dashboard")
@@ -58,7 +57,7 @@ def render_home():
         "Should you bring your car when moving to attend Cal Poly Humboldt? "
         "This dashboard is intended to help you figure that out! This page "
         "utilizes three sources of information: "
-        "\n1) a commuter survey with synthetic responses, "
+        "\n1) A commuter survey with synthetic responses, "
             "typically sent out to all students and faculty of Cal Poly Humboldt, "
         "\n2) A synthetic dataset of addresses in the areas where students and faculty typically live."
         "\n3) Routing and transportation data used to calculate commute times from addresses to campus. " 
@@ -106,7 +105,8 @@ def render_transportation():
             "JackPass",
             "Unlimited bus rides, free for students and a small fee for faculty/staff.",
             [
-                ("Visit website", "https://www.humboldt.edu/transportation-parking/sustainable-transportation/jackpass")
+                ("JackPass Website", "https://www.humboldt.edu/transportation-parking/sustainable-transportation/jackpass"),
+                ("Bus Schedule and Routes", "https://www.hta.org/")
             ],
         ),
         (
@@ -114,7 +114,7 @@ def render_transportation():
             "Bikes available on campus and in the community for discounted rental.",
             [
                 ("Humboldt Bike Share", "https://www.tandem-mobility.com/humboldt"),
-                ("General biking information", "https://www.humboldt.edu/transportation-parking/sustainable-transportation/bike-riding"),
+                ("More Biking Information", "https://www.humboldt.edu/transportation-parking/sustainable-transportation/bike-riding"),
             ],
         ),
         (
@@ -122,7 +122,7 @@ def render_transportation():
             "Free bike maintenance and instruction.",
             [
                 ("Bicycle Learning Center", "https://www.humboldt.edu/blc"),
-                ("General biking information", "https://www.humboldt.edu/transportation-parking/sustainable-transportation/bike-riding"),
+                ("More Biking Information", "https://www.humboldt.edu/transportation-parking/sustainable-transportation/bike-riding"),
             ],
         ),
         (
@@ -146,6 +146,15 @@ def render_transportation():
             "all within walking distance. Try the Original Mode of Transportation; Be a Pedestrian!",
             [],
         ),
+        (
+            "Sustainable Transportation",
+            "If you want to learn more about transportation options or what the University is doing to promote"
+            "sustainable transportation, visit the sustainability dashboard!",
+            [
+                ("Sustainable Transportation Options", "https://www.humboldt.edu/transportation-parking/sustainable-transportation"),
+                ("Sustainability Dashboard", "https://www.humboldt.edu/sustainable-campus/sustainability-dashboard/transportation")
+            ]
+        )
 ]
 
     for name, desc, links in options:
@@ -262,7 +271,7 @@ def render_survey():
         else:
             st.warning(f"Your percentages add up to {total}%. They need to total 100%.")
 
-    # --- Q8-Q10: follow-ups that only appear for certain answers ------------
+    # --- Q7-Q9: follow-ups that only appear for certain answers ------------
     vehicle = charging = bike_type = None
 
     if any(m in DRIVE_MODES and mix[m] > 0 for m in mix):  # Q8
@@ -286,7 +295,7 @@ def render_survey():
             horizontal=True,
         )
 
-    # --- Q11 backup mode and barrier ----------------------------------------
+    # --- Q10 backup mode and barrier ----------------------------------------
     st.subheader("Backup plan")
     backup = st.selectbox(
         "If you couldn't take your primary mode, what would you most likely use?",
@@ -304,18 +313,18 @@ def render_survey():
             index=None,
         )
 
-    # --- Q12 location -------------------------------------------------------
+    # --- Q11 location -------------------------------------------------------
     st.subheader("Where you commute from")
     city = st.text_input("City")
     zip_code = st.text_input("Zip code")
 
-    # --- Q13 resource awareness ---------------------------------------------
+    # --- Q12 resource awareness ---------------------------------------------
     st.subheader("Transportation resources")
     resource_answers = {}
     for r in RESOURCES:
         resource_answers[r] = st.selectbox(r, KNOWLEDGE, index=None, key=f"res_{r}")
 
-    # --- Q14 comments ---------------------------------------------------------
+    # --- Q13 comments ---------------------------------------------------------
     comment = st.text_area("What changes would make it easier to get to campus without a car?")
 
     # --- Submit ---------------------------------------------------------------
@@ -370,38 +379,13 @@ def render_data():
     st.write(f"{(df['current_city'] == city).sum()} students in {city}")
 
 
-# ---------------------------------------------------------------------------
-# USEFUL LINKS
-# ---------------------------------------------------------------------------
-def render_links():
-    st.title("Useful Links")
-
-    st.subheader("Commute data and reports")
-    st.markdown(
-        "- [Cal Poly Humboldt Transportation Dashboard (Morgan's commuter report)]"
-        "(https://www.humboldt.edu/sustainable-campus/sustainability-dashboard/transportation)"
-    )
-
-    st.subheader("Getting around")
-    st.markdown(
-        "- TODO: transit schedules and maps\n"
-        "- TODO: JackPass\n"
-        "- TODO: Humboldt Bike Share\n"
-        "- TODO: Bicycle Learning Center\n"
-        "- TODO: Ride-match\n"
-        "- TODO: ZipCar\n"
-        "- TODO: Transportation & Parking Services"
-    )
-
-    st.subheader("Project")
-    st.markdown("- TODO: course page, contact")
 
 
+#----------------------------------------------------------------------------
 RENDERERS = {
     "Home": render_home,
     "Transportation Info": render_transportation,
     "Take the Survey": render_survey,
-    "Explore Data": render_data,
-    "Useful Links": render_links,
+    "Explore Data": render_data
 }
 RENDERERS[section]()
