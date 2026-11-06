@@ -8,7 +8,8 @@ Built from the class templates:
 Pages: Home, Transportation Info, Take the Survey, Explore Data, Useful Links
 Everything marked TODO is a placeholder to replace once the design is settled.
 
-Run with:  streamlit run draft_dash.py
+Run with:  py -m streamlit run draft_dash.py
+    - make sure you are in the Project_2 folder, or adjust the path to draft_dash.py
 """
 
 import pandas as pd
@@ -54,9 +55,18 @@ def render_home():
 
     st.header("Purpose")
     st.info(
-        "TODO: one or two sentences on why this dashboard exists. "
-        "Example: help students and employees see how people get to campus, "
-        "find lower-carbon options that fit their trip, and share feedback."
+        "Should you bring your car when moving to attend Cal Poly Humboldt? "
+        "This dashboard is intended to help you figure that out! This page "
+        "utilizes three sources of information: "
+        "\n1) a commuter survey with synthetic responses, "
+            "typically sent out to all students and faculty of Cal Poly Humboldt, "
+        "\n2) A synthetic dataset of addresses in the areas where students and faculty typically live."
+        "\n3) Routing and transportation data used to calculate commute times from addresses to campus. " 
+        "\n\nWhat’s notable about data sets 1 and 2, are that they are artificially produced, "
+        "while they represent real life populations, they may not be completely accurate "
+        "as to where the actual population lives or real survey answers. "
+        "\nTake our survey located on the left to discover the pros " 
+        "and cons of bringing a car and help you determine if you should in the first place!"
     )
 
     st.header("Introduction")
@@ -73,7 +83,7 @@ def render_home():
 
     st.header("Campus commute at a glance")
     st.caption(
-        "2025-26 Commuter Report: share of commute trips made by driving alone."
+        "2025-26 Commuter Report: share of commute trips made by <u>driving alone</u>."
     )
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("All campus", "32.0%")
@@ -90,19 +100,60 @@ def render_transportation():
     st.write("Ways to get to campus other than driving alone.")
 
     # (name, description). TODO: confirm details, add costs, hours and routes.
+    
     options = [
-        ("JackPass", "Unlimited bus rides, free for students and a small fee for faculty/staff."),
-        ("Humboldt Bike Share", "Bikes available on campus and in the community for discounted rental."),
-        ("Bicycle Learning Center", "Free bike maintenance and instruction."),
-        ("Free Ride-match", "Connects drivers and riders for carpooling and long-distance trips."),
-        ("ZipCar", "Cars on demand by the hour or day. ZipCar covers gas, insurance and parking."),
-        ("Discounted express buses", "Redwood Express Bus to Sonoma County, plus Amtrak buses and trains."),
-    ]
-    for name, desc in options:
+        (
+            "JackPass",
+            "Unlimited bus rides, free for students and a small fee for faculty/staff.",
+            [
+                ("Visit website", "https://www.humboldt.edu/transportation-parking/sustainable-transportation/jackpass")
+            ],
+        ),
+        (
+            "Humboldt Bike Share",
+            "Bikes available on campus and in the community for discounted rental.",
+            [
+                ("Humboldt Bike Share", "https://www.tandem-mobility.com/humboldt"),
+                ("General biking information", "https://www.humboldt.edu/transportation-parking/sustainable-transportation/bike-riding"),
+            ],
+        ),
+        (
+            "Bicycle Learning Center",
+            "Free bike maintenance and instruction.",
+            [
+                ("Bicycle Learning Center", "https://www.humboldt.edu/blc"),
+                ("General biking information", "https://www.humboldt.edu/transportation-parking/sustainable-transportation/bike-riding"),
+            ],
+        ),
+        (
+            "Free Ride-match",
+            "Connects drivers and riders for carpooling and long-distance trips.",
+            [
+                ("Visit website", "https://www.humboldt.edu/transportation-parking/sustainable-transportation/carpool-program")
+            ],
+        ),
+        (
+            "ZipCar",
+            "Cars on demand by the hour or day. ZipCar covers gas, insurance and parking.",
+            [
+                ("Visit website", "https://www.humboldt.edu/transportation-parking/sustainable-transportation/zipcar")
+            ],
+        ),
+        (
+            "Walking",
+            "If you live on campus or in Arcata, you can get by without a car. "
+            "The University, downtown Arcata, restaurants, shopping centers and health care services are "
+            "all within walking distance. Try the Original Mode of Transportation; Be a Pedestrian!",
+            [],
+        ),
+]
+
+    for name, desc, links in options:
         with st.container(border=True):
             st.subheader(name)
             st.write(desc)
-            st.caption("TODO: add link and how to get started")
+            for label, url in links:
+                st.link_button(label, url)  
 
     st.divider()
     st.subheader("Try it: how far do you live from campus?")
@@ -125,7 +176,7 @@ MODES = [
     "Walking (I live on-campus)",
     "Walking (I live off-campus)",
     "Attending virtual classes or telecommuting",
-    "Driving or motorcycling alone",
+    "Driving alone",
     "University shuttle",
     "Carpool or vanpool with others",
     "Riding the bus",
@@ -133,14 +184,17 @@ MODES = [
     "Uber or Lyft",
     "Other",
 ]
-DRIVE_MODES = {"Driving or motorcycling alone", "Carpool or vanpool with others"}
+DRIVE_MODES = {"Driving alone", "Carpool or vanpool with others"}
 BIKE_MODE = "Bicycling, scooter, skateboard or other non-gas mode"
 
-WEEKS = {
-    "Student": ["<16", "16", "32", "37", "40", "42", ">42"],
-    "Faculty": ["<18", "18", "36", "41", "44", "46", ">46"],
-    "Staff/Admin": ["<24", "24-26", "45-47", "42-44", "50-51"],
-}
+WEEKS = ["<16 (less than one semester)", 
+         "16 (one semester)", 
+         "32 (two semesters)", 
+            "37 (two semesters plus a five-week summer course)", 
+            "40 (two semesters plus an eight-week summer course", 
+            "42 (two semesters plus two summer courses)", ">42"
+]
+
 RESOURCES = [
     "JackPass",
     "Humboldt Bike Share",
@@ -151,10 +205,9 @@ RESOURCES = [
 ]
 KNOWLEDGE = [
     "I did not know about it",
-    "I knew about it, but wouldn't have used it",
-    "I didn't know, but now I'll probably use it",
-    "I knew about it but didn't use it",
-    "I used it!",
+    "I did not know, but now I might use it",
+    "I knew about it but did not use it",
+    "I've used it!",
 ]
 
 
@@ -165,15 +218,7 @@ def render_survey():
         "Answers are not saved anywhere yet, they only show up in this session."
     )
 
-    # --- Role (decides which Q4-6 version shows) ---------------------------
-    role = st.radio(
-        "I am a...", ["Student", "Faculty", "Staff/Admin"], index=None, horizontal=True
-    )
-    if role is None:
-        st.info("Please select an answer above.")
-        return
-
-    # --- Q2 housing --------------------------------------------------------
+    # --- Q1 housing --------------------------------------------------------
     housing = st.radio(
         "Which best describes where you live?",
         [
@@ -188,7 +233,7 @@ def render_survey():
     if housing is None:
         return
 
-    # --- Q3 days per week --------------------------------------------------
+    # --- Q2 days per week --------------------------------------------------
     days = st.select_slider(
         "How many days a week do you commute to the university "
         "(in person or by telecommuting)?",
@@ -196,15 +241,15 @@ def render_survey():
         value=5,
     )
 
-    # --- Q4-6: role-specific weeks per year (branch on role) ----------------
+    # --- Q3-5: role-specific weeks per year (branch on role) ----------------
     weeks = st.selectbox(
-        f"[{role} only] Between the end of last May and the end of this May, "
+        "Between the end of last May and the end of this May, "
         "about how many weeks will you have come to the university?",
-        WEEKS[role],
+        WEEKS,
         index=None,
     )
 
-    # --- Q7 mode mix (must total 100%) --------------------------------------
+    # --- Q6 mode mix (must total 100%) --------------------------------------
     st.subheader("How do you usually get to the university?")
     chosen = st.multiselect("Select every option you typically use", MODES)
     mix = {}
@@ -279,7 +324,7 @@ def render_survey():
             st.error("Please make your mode percentages total 100% before submitting.")
         else:
             st.session_state["last_response"] = {
-                "role": role, "housing": housing, "days_per_week": days,
+                "housing": housing, "days_per_week": days,
                 "weeks": weeks, "mode_mix": mix, "vehicle": vehicle,
                 "ev_offcampus_charging": charging, "bike_type": bike_type,
                 "backup_mode": backup, "barrier": barrier, "city": city,
