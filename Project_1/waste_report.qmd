@@ -60,29 +60,85 @@ and separately in the rubric handout.
 
 *In approximately one page or less, state the client's problem, what your team built, your recommended system, the most useful demonstration results, the audit-size recommendation, and practical next steps. This section should stand alone for campus leaders. Write it last.*
 
+
+
 # Introduction
 
 *Explain the purpose of the waste-audit data system and its role in tracking waste and evaluating future interventions. Identify the client and audiences, summarize relevant campus sustainability or zero-waste priorities with citations, and preview the questions this report addresses. Distinguish system development from a completed intervention evaluation.*
+
+Cal Poly Humboldt has a commitement to creating a zerp-waste campus and has set a goal to reduce waste production by 50% by 2030 (insert citation to campus sustainability plan). However, the University currently lacks a method to track waste production on campus making it difficult to determine the effectiveness of intervention methods aimed at reducing waste. The purpose of this project is to develop such a method which will allow campus officials at Cal Poly Humboldt to track waste production and evaluate the effectiveness of interventions through time. These data systems will be crucial for the furtherment of the University's sustainability and zero-waste goals and will serve as a framework for future interventions and development. Some questions this report addressesinclude: 
+What is the best way to store and summarize waste audit data while meeting the needs of Cal Poly Humboldt's Sustainabilty Office? 
+How can we ensure that data recorded is accurate and reliable? 
+How can we determine the number of audits required to detect meaningful changes inwaste production?
+How can we evaluate the effectiveness of interventions aimed at reducing waste production?
+
+This report will also provide reccommendations for the implementation and use of the data system as well as areas of improvement around campus where greater focus on waste reduction strategies may be useful.
 
 # Methods
 
 *Explain how you designed, evaluated, and tested the systems and analyses. Use language accessible to a nontechnical client; point interested readers to supporting files for technical detail.*
 
+Background research:
+campus goals, how far along they are, are they on track?
+how does this info help us in the project
+
+Waste Audits:
+info on how, why, and how it helped
+
+In-person observations:
+what is the current state of waste management on campus, what is working well, what is not working well, and how it can be improved
+interviews with staff and students
+
+Brief over view of database and spreadsheet prototypes:
+how the two systems were designed, what they were designed to do, and how they are different
+how they are tested
+
+
+
 ## Client Data Requirements and Actual Audits
 
 *Describe the client's required fields: building, week, compost weight and volume, landfill weight and volume, recycling weight and volume, and comments. Specify units, data definitions, and how missing data are recorded. Identify any additional fields your team introduced and why. Explain the two landfill audits and one building audit collected for this project and any preparation of those data; do not invent or infer values.*
+
+Building:
+Week:
+Compost weight (lbs):
+Compost volume (percent):
+Landfill weight (lbs):
+Landfill volume (percent):
+Recycling weight (lbs):
+Recycling volume (percent):
+Comments:
+Total weight (lbs):
+Most common item:
+(insert materials found if we end up doing that)
+
 
 ## Spreadsheet and Relational Database Prototypes
 
 *Introduce both storage approaches for a reader who has never used SQL: explain what a relational database is, how its linked tables differ from a spreadsheet, and why these differences might matter for campus audits. Describe the designs your team actually built, their required fields, and how audit records can be entered and summarized. Explain technical terms such as tables, keys, and relationships in plain language; include a diagram if useful. Link to the submitted spreadsheet and SQL files in the team GitHub repository.*
 
+sql database design:
+how the database was designed, what tables were created, why
+intended audience of sql database: who will use it, what they will use it for, and how they will use it
+
+spreadsheet design:
+how the spreadsheet was designed, what sheets were created, and why
+intended audience of spreadsheet: who will use it, what they will use it for, and how they will use it
+
 ## Validation and System Testing
 
 *Describe how you entered the two real landfill audits and one real building audit into both prototypes and tested them with substantial, clearly labeled synthetic audit records. Explain how the synthetic data were generated and what checks showed that each system stores records and produces accurate summaries. Choose additional checks that are useful for your design; you do not need to follow a prescribed test script.*
 
+
+
 ## Criteria for Comparing Storage Systems
 
 *Explain the criteria your team chose to compare its two working prototypes. Suggested criteria include ease of data entry, data accuracy and integrity, producing summaries, growth to many audits, maintenance, costs, required staff expertise, and support for before/after intervention comparisons. Use criteria appropriate to the client's needs, and explain how you evaluated both options fairly. Not every criterion needs a numerical score.*
+
+database and spreadsheet testing:
+how the two systems were tested, what was tested, results
+how are the two systems different, what are the advantages and disadvantages of each system, and which system is better for the client and 
+under what circumstances one might be better than the other
 
 ## Economic and Sustainability Metric Definitions
 
