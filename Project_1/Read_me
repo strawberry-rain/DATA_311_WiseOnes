@@ -1,15 +1,14 @@
 The Wise Ones
 Members: Jimmy Wee Sit, Strawberry Orr, Chase Ervin, Roxylynn Roach
 
-- Environmental impacts:
-    - Diversion Rate based on landfill percentages:
-        - (1 - (total weight of true landfill / total weight of audit)) * 100 = percentage of waste improperly disposed
-        - represents percentage of recycling and compost present in the landfill audit. Lower percentage is better
-
-    - https://www.epa.gov/waste-reduction-model/versions-waste-reduction-model
+- Environmental impact:
+    - https://www.epa.gov/system/files/documents/2025-01/ghg-emission-factors-hub-2025.pdf
         - the US Environmental Protection Agency developed a calculator to estimate emissions based of waste
-        - unsure if requirement or optional: has material capability for more accurate predictions
-        - compatable with excel
+        - using their metric weights i developed a more generalized formula for calculating CO2 emissions (table 9)
+            - emissions are given in metric tons/short tons. this isn't useful for us. to convert to lbs: multiply evert metric weight by 2204.62/2000 = 1.10231
+        - 0.0220462(mixed plastic lbs) x 1.10231(cardboard lbs) x 0.9870559(mixed paper lbs) x 0.7495708(food waste lbs) x 0.0220462 (metal lbs) 
+        x 0.0220462(glass lbs)
+
 
 - Economic impact:
     - Until we have accurate costs from the current contract, we'll estimate from the HWMA rates which CPH previously had a contract with in 2023.
